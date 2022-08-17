@@ -1,0 +1,28 @@
+include "base-types.fbs";
+include "game-messages.fbs";
+include "player-messages.fbs";
+
+namespace Ctf;
+
+union MessageContent {
+    PlayerMove,
+    PlayerChargeFire,
+    PlayerFire,
+    PlayerCancelFire,
+    PlayerKilled,
+    PlayerRespawn,
+    TeamWon,
+    TeamScored,
+    FlagTaken,
+    FlagDropped,
+    FlagReturned,
+}
+
+table CtfMessage {
+
+    content:MessageContent;
+    when:int32;
+
+}
+
+root_type CtfMessage;

@@ -1,0 +1,39 @@
+include "base-types.fbs";
+
+namespace Ctf;
+
+table TeamWon {
+    winner:ubyte;
+    scores:[uint32];
+}
+
+table FlagTaken {
+    who:string;
+    flag_team:ubyte;
+    at:Vec2;
+}
+
+table TeamScored {
+    who:string;
+    team:ubyte;
+    flag_team:ubyte;
+    scores:[uint32];
+}
+
+table PlayerKilled {
+    who:string;
+    at:Vec2;
+    by:string;
+}
+
+table FlagDropped {
+    by:string;
+    at:Vec2;
+    flag_team:ubyte;
+}
+
+table FlagReturned {
+    by:string;
+    at:Vec2;
+    team_flag:ubyte;
+}

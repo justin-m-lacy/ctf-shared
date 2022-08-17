@@ -1,0 +1,33 @@
+include "base-types.fbs";
+
+namespace Ctf;
+
+
+table PlayerRespawn {
+    who:string;
+    at:Vec2;
+}
+
+table PlayerMove {
+
+    who:string;
+    to:Vec2;
+}
+
+table PlayerChargeFire {
+
+    who:string;
+    at:Vec2;
+
+}
+
+table PlayerFire {
+    who:string;
+    at:Vec2;
+    orientation:Vec2;
+    strength:float;
+}
+
+table PlayerCancelFire {
+    who:string;
+}

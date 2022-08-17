@@ -1,0 +1,7 @@
+namespace Ctf;
+
+struct Vec2 {
+    x:float;
+    y:float;
+}
+

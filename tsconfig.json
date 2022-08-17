@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "typeRoots": [
+      "./node_modules"
+    ],
+    "outDir": "lib",
+    "declarationDir": "types",
+    "allowJs": false,
+    "skipLibCheck": true,
+    "composite": true,
+    "declaration": true,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "index.ts",
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
+}
