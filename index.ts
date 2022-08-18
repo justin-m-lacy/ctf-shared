@@ -20,5 +20,6 @@ export { PlayerRespawn } from 'src/flatbuffers/ctf/player-respawn';
 
 export * from './src/messages/encode';
 export * from './src/messages/decode';
+export type { CtfEvent } from 'src/messages/types';
 
 export * from 'src/messages/types';
