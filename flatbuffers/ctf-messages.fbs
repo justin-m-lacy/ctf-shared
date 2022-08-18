@@ -1,6 +1,7 @@
 include "base-types.fbs";
 include "game-messages.fbs";
 include "player-messages.fbs";
+include "client-messages.fbs";
 
 namespace Ctf;
 

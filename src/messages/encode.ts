@@ -160,7 +160,7 @@ export const Encoder = {
 
     },
 
-    makePlayerFire(userid: string, at: Point, orientation: Point, strength: number, builder?: flatbuffers.Builder) {
+    makePlayerFire(userid: string, at: Point, orientation: Point, power: number, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -171,7 +171,7 @@ export const Encoder = {
         PlayerFire.addAt(builder, this.makeVec2(at, builder));
         PlayerFire.addWhen(builder, Date.now());
         PlayerFire.addOrientation(builder, this.makeVec2(orientation, builder));
-        PlayerFire.addStrength(builder, strength);
+        PlayerFire.addPower(builder, power);
 
         const offset = PlayerFire.endPlayerFire(builder);
         builder.finish(offset);

@@ -45,7 +45,7 @@ orientation(obj?:Vec2):Vec2|null {
   return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-strength():number {
+power():number {
   const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
@@ -70,8 +70,8 @@ static addOrientation(builder:flatbuffers.Builder, orientationOffset:flatbuffers
   builder.addFieldStruct(3, orientationOffset, 0);
 }
 
-static addStrength(builder:flatbuffers.Builder, strength:number) {
-  builder.addFieldFloat32(4, strength, 0.0);
+static addPower(builder:flatbuffers.Builder, power:number) {
+  builder.addFieldFloat32(4, power, 0.0);
 }
 
 static endPlayerFire(builder:flatbuffers.Builder):flatbuffers.Offset {

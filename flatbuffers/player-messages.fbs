@@ -29,7 +29,7 @@ table PlayerFire {
     at:Vec2;
     when:int32;
     orientation:Vec2;
-    strength:float;
+    power:float;
 }
 
 table PlayerCancelFire {

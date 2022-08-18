@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "prepare": "tsc",
-    "make-fbs": "rimraf flatbuffers/out && flatc -o flatbuffers/out --ts --gen-all --gen-onefile flatbuffers/ctf-messages.fbs",
+    "make-fbs": "rimraf flatbuffers/out && flatc -o flatbuffers/out --ts --gen-all flatbuffers/ctf-messages.fbs",
     "copy-fbs": "rimraf src/flatbuffers/ && copyfiles -u 2 flatbuffers/out/**/* src/flatbuffers/",
     "lint": "eslint -p tsconfig.json",
     "test": "ts-node run test/flatbuffers.ts"
