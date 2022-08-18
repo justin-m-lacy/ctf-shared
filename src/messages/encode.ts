@@ -1,5 +1,5 @@
 import * as flatbuffers from 'flatbuffers';
-import { Point } from '../types';
+import { Point } from '../model/model-types';
 import { PlayerMove } from '../flatbuffers/ctf/player-move';
 import { PlayerKilled } from '../flatbuffers/ctf/player-killed';
 import { PlayerFire } from '../flatbuffers/ctf/player-fire';

@@ -1,0 +1,15 @@
+import * as flatbuffers from 'flatbuffers';
+import { Point } from '../model/model-types';
+export declare const makeFlagReturned: (userid: string, at: Point, teamFlag: number, builder?: flatbuffers.Builder) => Uint8Array;
+export declare const makeFlagTaken: (userid: string, at: Point, flagTeam: number, builder?: flatbuffers.Builder) => Uint8Array;
+export declare const makeFlagDropped: (userid: string, at: Point, flagTeam: number, builder?: flatbuffers.Builder) => Uint8Array;
+export declare const makeTeamWon: (scores: number[], builder?: flatbuffers.Builder) => Uint8Array;
+export declare const makeTeamScored: (userid: string, scoringTeam: number, flagTeam: number, scores: number[], builder?: flatbuffers.Builder) => Uint8Array;
+export declare const makePlayerChargeFire: (userid: string, at: Point, builder?: flatbuffers.Builder) => Uint8Array;
+export declare const makePlayerCancelFire: (userid: string, builder?: flatbuffers.Builder) => Uint8Array;
+export declare const makePlayerKilled: (userid: string, by: string, at: Point, builder?: flatbuffers.Builder) => Uint8Array;
+export declare const makePlayerFire: (userid: string, at: Point, orientation: Point, strength: number, builder?: flatbuffers.Builder) => Uint8Array;
+export declare const makePlayerMove: (userid: string, to: Point, builder?: flatbuffers.Builder) => Uint8Array;
+export declare const makePlayerRespawn: (userid: string, at: Point, builder?: flatbuffers.Builder) => Uint8Array;
+export declare const makeMessage: (contentInd: number, contentType: number, builder: flatbuffers.Builder) => Uint8Array;
+export declare const makeVec2: (to: Point, builder: flatbuffers.Builder) => number;

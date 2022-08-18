@@ -1,16 +1,30 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    "rootDir": ".",
+    "baseUrl": ".",
+    "outDir": "lib",
+    "target": "esnext",
+    "module": "esnext",
     "typeRoots": [
       "./node_modules"
     ],
-    "outDir": "lib",
+    "importsNotUsedAsValues": "remove",
+    "declaration": true,
     "declarationDir": "types",
-    "allowJs": false,
+    "sourceMap": true,
+    "incremental": true,
     "skipLibCheck": true,
     "composite": true,
-    "declaration": true,
-    "moduleResolution": "node"
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "lib": [
+      "esnext"
+    ],
+    "types": [
+      "node"
+    ]
   },
   "include": [
     "index.ts",
@@ -18,6 +32,7 @@
   ],
   "exclude": [
     "node_modules",
-    "build"
+    "lib",
+    "types"
   ]
 }
