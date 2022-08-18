@@ -12,8 +12,6 @@ import { FlagReturned } from '../flatbuffers/ctf/flag-returned';
 import { FlagDropped } from '../flatbuffers/ctf/flag-dropped';
 import { FlagTaken } from '../flatbuffers/ctf/flag-taken';
 import { Vec2 } from '../flatbuffers/ctf/vec2';
-import { CtfMessage } from '../flatbuffers/ctf/ctf-message';
-import { MessageContent } from '../flatbuffers/ctf/message-content';
 import { maxIndex } from '../util/array';
 
 export const Encoder = {
@@ -28,7 +26,10 @@ export const Encoder = {
         FlagReturned.addAt(builder, this.makeVec2(at, builder));
         FlagReturned.addTeamFlag(builder, teamFlag)
 
-        return this.makeMessage(FlagReturned.endFlagReturned(builder), MessageContent.FlagReturned, builder);
+        const offset = FlagReturned.endFlagReturned(builder);
+        builder.finish(offset);
+
+        return builder.asUint8Array();
 
     },
 
@@ -44,7 +45,10 @@ export const Encoder = {
         FlagTaken.addAt(builder, this.makeVec2(at, builder));
         FlagTaken.addFlagTeam(builder, flagTeam);
 
-        return this.makeMessage(FlagTaken.endFlagTaken(builder), MessageContent.FlagTaken, builder);
+        const offset = FlagTaken.endFlagTaken(builder);
+        builder.finish(offset);
+
+        return builder.asUint8Array();
 
     },
 
@@ -59,7 +63,10 @@ export const Encoder = {
         FlagDropped.addAt(builder, this.makeVec2(at, builder));
         FlagDropped.addFlagTeam(builder, flagTeam);
 
-        return this.makeMessage(FlagDropped.endFlagDropped(builder), MessageContent.FlagDropped, builder);
+        const offset = FlagDropped.endFlagDropped(builder);
+        builder.finish(offset);
+
+        return builder.asUint8Array();
 
     },
 
@@ -74,7 +81,10 @@ export const Encoder = {
         TeamWon.addWinner(builder, winner);
         TeamWon.addScores(builder, scoresIndex);
 
-        return this.makeMessage(TeamWon.endTeamWon(builder), MessageContent.TeamWon, builder);
+        const offset = TeamWon.endTeamWon(builder);
+        builder.finish(offset);
+
+        return builder.asUint8Array();
 
     },
 
@@ -91,7 +101,10 @@ export const Encoder = {
         TeamScored.addTeam(builder, scoringTeam)
         TeamScored.addFlagTeam(builder, flagTeam);
 
-        return this.makeMessage(TeamScored.endTeamScored(builder), MessageContent.TeamScored, builder);
+        const offset = TeamScored.endTeamScored(builder);
+        builder.finish(offset);
+
+        return builder.asUint8Array();
 
     },
 
@@ -104,8 +117,12 @@ export const Encoder = {
         PlayerChargeFire.startPlayerChargeFire(builder);
         PlayerChargeFire.addWho(builder, whoIndex);
         PlayerChargeFire.addAt(builder, this.makeVec2(at, builder));
+        PlayerChargeFire.addWhen(builder, Date.now());
 
-        return this.makeMessage(PlayerChargeFire.endPlayerChargeFire(builder), MessageContent.PlayerChargeFire, builder);
+        const offset = PlayerChargeFire.endPlayerChargeFire(builder);
+        builder.finish(offset);
+
+        return builder.asUint8Array();
 
     },
     makePlayerCancelFire(userid: string, builder?: flatbuffers.Builder) {
@@ -117,7 +134,10 @@ export const Encoder = {
         PlayerCancelFire.startPlayerCancelFire(builder);
         PlayerCancelFire.addWho(builder, whoIndex);
 
-        return this.makeMessage(PlayerCancelFire.endPlayerCancelFire(builder), MessageContent.PlayerCancelFire, builder);
+        const offset = PlayerCancelFire.endPlayerCancelFire(builder);
+        builder.finish(offset);
+
+        return builder.asUint8Array();
 
     },
 
@@ -133,7 +153,10 @@ export const Encoder = {
         PlayerKilled.addBy(builder, byIndex);
         PlayerKilled.addAt(builder, this.makeVec2(at, builder));
 
-        return this.makeMessage(PlayerKilled.endPlayerKilled(builder), MessageContent.PlayerKilled, builder);
+        const offset = PlayerKilled.endPlayerKilled(builder);
+        builder.finish(offset);
+
+        return builder.asUint8Array();
 
     },
 
@@ -146,10 +169,14 @@ export const Encoder = {
         PlayerFire.startPlayerFire(builder);
         PlayerFire.addWho(builder, whoIndex);
         PlayerFire.addAt(builder, this.makeVec2(at, builder));
+        PlayerFire.addWhen(builder, Date.now());
         PlayerFire.addOrientation(builder, this.makeVec2(orientation, builder));
         PlayerFire.addStrength(builder, strength);
 
-        return this.makeMessage(PlayerFire.endPlayerFire(builder), MessageContent.PlayerFire, builder);
+        const offset = PlayerFire.endPlayerFire(builder);
+        builder.finish(offset);
+
+        return builder.asUint8Array();
 
     },
 
@@ -162,8 +189,12 @@ export const Encoder = {
         PlayerMove.startPlayerMove(builder);
         PlayerMove.addWho(builder, whoIndex);
         PlayerMove.addTo(builder, this.makeVec2(to, builder));
+        PlayerMove.addWhen(builder, Date.now());
 
-        return this.makeMessage(PlayerMove.endPlayerMove(builder), MessageContent.PlayerMove, builder);
+        const offset = PlayerMove.endPlayerMove(builder);
+        builder.finish(offset);
+
+        return builder.asUint8Array();
 
     },
 
@@ -177,12 +208,7 @@ export const Encoder = {
         PlayerRespawn.addWho(builder, whoIndex);
         PlayerRespawn.addAt(builder, this.makeVec2(at, builder));
 
-        return this.makeMessage(PlayerRespawn.endPlayerRespawn(builder), MessageContent.PlayerRespawn, builder);
-
-    },
-    makeMessage(contentInd: number, contentType: number, builder: flatbuffers.Builder) {
-
-        const offset = CtfMessage.createCtfMessage(builder, contentType, contentInd, Date.now());
+        const offset = PlayerRespawn.endPlayerRespawn(builder);
         builder.finish(offset);
 
         return builder.asUint8Array();

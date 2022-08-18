@@ -30,21 +30,30 @@ who(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-to(obj?:Vec2):Vec2|null {
+when():number {
   const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? this.bb!.readInt32(this.bb_pos + offset) : 0;
+}
+
+to(obj?:Vec2):Vec2|null {
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 static startPlayerMove(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+  builder.startObject(3);
 }
 
 static addWho(builder:flatbuffers.Builder, whoOffset:flatbuffers.Offset) {
   builder.addFieldOffset(0, whoOffset, 0);
 }
 
+static addWhen(builder:flatbuffers.Builder, when:number) {
+  builder.addFieldInt32(1, when, 0);
+}
+
 static addTo(builder:flatbuffers.Builder, toOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(1, toOffset, 0);
+  builder.addFieldStruct(2, toOffset, 0);
 }
 
 static endPlayerMove(builder:flatbuffers.Builder):flatbuffers.Offset {

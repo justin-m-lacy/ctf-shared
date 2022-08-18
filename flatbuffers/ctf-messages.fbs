@@ -4,7 +4,7 @@ include "player-messages.fbs";
 
 namespace Ctf;
 
-union MessageContent {
+enum MessageType:byte {
     PlayerMove,
     PlayerChargeFire,
     PlayerFire,
@@ -17,12 +17,3 @@ union MessageContent {
     FlagDropped,
     FlagReturned,
 }
-
-table CtfMessage {
-
-    content:MessageContent;
-    when:int32;
-
-}
-
-root_type CtfMessage;

@@ -5,18 +5,21 @@ namespace Ctf;
 
 table PlayerRespawn {
     who:string;
+    when:int32;
     at:Vec2;
 }
 
 table PlayerMove {
 
     who:string;
+    when:int32;
     to:Vec2;
 }
 
 table PlayerChargeFire {
 
     who:string;
+    when:int32;
     at:Vec2;
 
 }
@@ -24,6 +27,7 @@ table PlayerChargeFire {
 table PlayerFire {
     who:string;
     at:Vec2;
+    when:int32;
     orientation:Vec2;
     strength:float;
 }

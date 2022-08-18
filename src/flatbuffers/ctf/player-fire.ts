@@ -35,18 +35,23 @@ at(obj?:Vec2):Vec2|null {
   return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-orientation(obj?:Vec2):Vec2|null {
+when():number {
   const offset = this.bb!.__offset(this.bb_pos, 8);
+  return offset ? this.bb!.readInt32(this.bb_pos + offset) : 0;
+}
+
+orientation(obj?:Vec2):Vec2|null {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
   return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 strength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? this.bb!.readFloat32(this.bb_pos + offset) : 0.0;
 }
 
 static startPlayerFire(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(5);
 }
 
 static addWho(builder:flatbuffers.Builder, whoOffset:flatbuffers.Offset) {
@@ -57,12 +62,16 @@ static addAt(builder:flatbuffers.Builder, atOffset:flatbuffers.Offset) {
   builder.addFieldStruct(1, atOffset, 0);
 }
 
+static addWhen(builder:flatbuffers.Builder, when:number) {
+  builder.addFieldInt32(2, when, 0);
+}
+
 static addOrientation(builder:flatbuffers.Builder, orientationOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(2, orientationOffset, 0);
+  builder.addFieldStruct(3, orientationOffset, 0);
 }
 
 static addStrength(builder:flatbuffers.Builder, strength:number) {
-  builder.addFieldFloat32(3, strength, 0.0);
+  builder.addFieldFloat32(4, strength, 0.0);
 }
 
 static endPlayerFire(builder:flatbuffers.Builder):flatbuffers.Offset {
