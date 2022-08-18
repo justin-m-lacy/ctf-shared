@@ -1,4 +1,4 @@
-export { ClientEncode } from './src/messages/client';
+export { ClientEncoder } from './src/messages/client';
 export { LocalMove } from './src/flatbuffers/ctf/client/local-move';
 export { LocalChargeFire } from './src/flatbuffers/ctf/client/local-charge-fire';
 export { LocalFire } from './src/flatbuffers/ctf/client/local-fire';

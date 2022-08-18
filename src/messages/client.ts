@@ -6,7 +6,7 @@ import { LocalFire } from '../flatbuffers/ctf/client/local-fire';
 import { LocalChargeFire } from '../flatbuffers/ctf/client/local-charge-fire';
 import { LocalCancelFire } from '../flatbuffers/ctf/client/local-cancel-fire';
 
-export const ClientEncode = {
+export const ClientEncoder = {
 
     makeChargeFire(builder?: flatbuffers.Builder) {
 
