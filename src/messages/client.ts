@@ -1,10 +1,10 @@
 import { Point } from '../model/model-types';
 import * as flatbuffers from 'flatbuffers';
 import { Encoder } from './encode';
-import { LocalMove } from '../flatbuffers/ctf/client/local-move';
-import { LocalFire } from '../flatbuffers/ctf/client/local-fire';
-import { LocalChargeFire } from '../flatbuffers/ctf/client/local-charge-fire';
-import { LocalCancelFire } from '../flatbuffers/ctf/client/local-cancel-fire';
+import { ClientMove } from '../flatbuffers/ctf/client/client-move';
+import { ClientFire } from '../flatbuffers/ctf/client/client-fire';
+import { ClientChargeFire } from '../flatbuffers/ctf/client/client-charge-fire';
+import { ClientCancelFire } from '../flatbuffers/ctf/client/client-cancel-fire';
 
 export const ClientEncoder = {
 
@@ -12,9 +12,9 @@ export const ClientEncoder = {
 
         builder = builder ?? new flatbuffers.Builder(32);
 
-        LocalChargeFire.startLocalChargeFire(builder);
+        ClientChargeFire.startClientChargeFire(builder);
 
-        builder.finish(LocalChargeFire.endLocalChargeFire(builder));
+        builder.finish(ClientChargeFire.endClientChargeFire(builder));
 
         return builder.asUint8Array();
 
@@ -24,15 +24,15 @@ export const ClientEncoder = {
 
         builder = builder ?? new flatbuffers.Builder(128);
 
-        LocalFire.startLocalFire(builder);
+        ClientFire.startClientFire(builder);
         if (at != null) {
-            LocalFire.addAt(builder, Encoder.makeVec2(at, builder));
+            ClientFire.addAt(builder, Encoder.makeVec2(at, builder));
         }
         if (orientation) {
-            LocalFire.addOrientation(builder, Encoder.makeVec2(orientation, builder));
+            ClientFire.addOrientation(builder, Encoder.makeVec2(orientation, builder));
         }
 
-        const offset = LocalFire.endLocalFire(builder);
+        const offset = ClientFire.endClientFire(builder);
         builder.finish(offset);
 
         return builder.asUint8Array();
@@ -42,9 +42,9 @@ export const ClientEncoder = {
     makeCancelFire(builder?: flatbuffers.Builder) {
         builder = builder ?? new flatbuffers.Builder(32);
 
-        LocalCancelFire.startLocalCancelFire(builder);
+        ClientCancelFire.startClientCancelFire(builder);
 
-        builder.finish(LocalCancelFire.endLocalCancelFire(builder));
+        builder.finish(ClientCancelFire.endClientCancelFire(builder));
 
         return builder.asUint8Array();
     },
@@ -53,11 +53,11 @@ export const ClientEncoder = {
 
         builder = builder ?? new flatbuffers.Builder(128);
 
-        LocalMove.startLocalMove(builder);
-        LocalMove.addTo(builder, Encoder.makeVec2(to, builder));
-        LocalMove.addWhen(builder, Date.now());
+        ClientMove.startClientMove(builder);
+        ClientMove.addTo(builder, Encoder.makeVec2(to, builder));
+        ClientMove.addWhen(builder, Date.now());
 
-        const offset = LocalMove.endLocalMove(builder);
+        const offset = ClientMove.endClientMove(builder);
         builder.finish(offset);
 
         return builder.asUint8Array();

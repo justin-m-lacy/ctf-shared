@@ -5,22 +5,22 @@ import * as flatbuffers from 'flatbuffers';
 import { Vec2 } from '../../ctf/vec2';
 
 
-export class LocalMove {
+export class ClientMove {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):LocalMove {
+__init(i:number, bb:flatbuffers.ByteBuffer):ClientMove {
   this.bb_pos = i;
   this.bb = bb;
   return this;
 }
 
-static getRootAsLocalMove(bb:flatbuffers.ByteBuffer, obj?:LocalMove):LocalMove {
-  return (obj || new LocalMove()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+static getRootAsClientMove(bb:flatbuffers.ByteBuffer, obj?:ClientMove):ClientMove {
+  return (obj || new ClientMove()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static getSizePrefixedRootAsLocalMove(bb:flatbuffers.ByteBuffer, obj?:LocalMove):LocalMove {
+static getSizePrefixedRootAsClientMove(bb:flatbuffers.ByteBuffer, obj?:ClientMove):ClientMove {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new LocalMove()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new ClientMove()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
 when():number {
@@ -33,7 +33,7 @@ to(obj?:Vec2):Vec2|null {
   return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-static startLocalMove(builder:flatbuffers.Builder) {
+static startClientMove(builder:flatbuffers.Builder) {
   builder.startObject(2);
 }
 
@@ -45,7 +45,7 @@ static addTo(builder:flatbuffers.Builder, toOffset:flatbuffers.Offset) {
   builder.addFieldStruct(1, toOffset, 0);
 }
 
-static endLocalMove(builder:flatbuffers.Builder):flatbuffers.Offset {
+static endClientMove(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }

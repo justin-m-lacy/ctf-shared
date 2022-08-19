@@ -5,22 +5,22 @@ import * as flatbuffers from 'flatbuffers';
 import { Vec2 } from '../../ctf/vec2';
 
 
-export class LocalFire {
+export class ClientFire {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):LocalFire {
+__init(i:number, bb:flatbuffers.ByteBuffer):ClientFire {
   this.bb_pos = i;
   this.bb = bb;
   return this;
 }
 
-static getRootAsLocalFire(bb:flatbuffers.ByteBuffer, obj?:LocalFire):LocalFire {
-  return (obj || new LocalFire()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+static getRootAsClientFire(bb:flatbuffers.ByteBuffer, obj?:ClientFire):ClientFire {
+  return (obj || new ClientFire()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static getSizePrefixedRootAsLocalFire(bb:flatbuffers.ByteBuffer, obj?:LocalFire):LocalFire {
+static getSizePrefixedRootAsClientFire(bb:flatbuffers.ByteBuffer, obj?:ClientFire):ClientFire {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new LocalFire()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new ClientFire()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
 at(obj?:Vec2):Vec2|null {
@@ -33,7 +33,7 @@ orientation(obj?:Vec2):Vec2|null {
   return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-static startLocalFire(builder:flatbuffers.Builder) {
+static startClientFire(builder:flatbuffers.Builder) {
   builder.startObject(2);
 }
 
@@ -45,7 +45,7 @@ static addOrientation(builder:flatbuffers.Builder, orientationOffset:flatbuffers
   builder.addFieldStruct(1, orientationOffset, 0);
 }
 
-static endLocalFire(builder:flatbuffers.Builder):flatbuffers.Offset {
+static endClientFire(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }

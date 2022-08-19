@@ -1,8 +1,8 @@
 export { ClientEncoder } from './src/messages/client';
-export { LocalMove } from './src/flatbuffers/ctf/client/local-move';
-export { LocalChargeFire } from './src/flatbuffers/ctf/client/local-charge-fire';
-export { LocalFire } from './src/flatbuffers/ctf/client/local-fire';
-export { LocalCancelFire } from './src/flatbuffers/ctf/client/local-cancel-fire';
+export { ClientMove } from './src/flatbuffers/ctf/client/local-move';
+export { ClientChargeFire } from './src/flatbuffers/ctf/client/local-charge-fire';
+export { ClientFire } from './src/flatbuffers/ctf/client/local-fire';
+export { ClientCancelFire } from './src/flatbuffers/ctf/client/local-cancel-fire';
 
 export { MessageType } from 'src/flatbuffers/ctf/message-type';
 export { FlagDropped } from 'src/flatbuffers/ctf/flag-dropped';

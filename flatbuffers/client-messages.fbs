@@ -2,19 +2,19 @@ include "base-types.fbs";
 
 namespace Ctf.Client;
 
-table LocalMove {
+table ClientMove {
 
     when:int32;
     to:Vec2;
 }
 
-table LocalChargeFire {
+table ClientChargeFire {
 }
 
-table LocalFire {
+table ClientFire {
     at:Vec2;
     orientation:Vec2;
 }
 
-table LocalCancelFire {
+table ClientCancelFire {
 }

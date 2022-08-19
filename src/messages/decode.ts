@@ -12,10 +12,10 @@ import { TeamScored } from '../flatbuffers/ctf/team-scored';
 import { TeamWon } from '../flatbuffers/ctf/team-won';
 import { CtfEvent, PlayerEvent, GameEvent } from './types';
 import { MessageType } from 'src/flatbuffers/ctf/message-type';
-import { LocalMove } from '../flatbuffers/ctf/client/local-move';
-import { LocalFire } from '../flatbuffers/ctf/client/local-fire';
-import { LocalChargeFire } from '../flatbuffers/ctf/client/local-charge-fire';
-import { LocalCancelFire } from '../flatbuffers/ctf/client/local-cancel-fire';
+import { ClientMove } from '../flatbuffers/ctf/client/local-move';
+import { ClientFire } from '../flatbuffers/ctf/client/local-fire';
+import { ClientChargeFire } from '../flatbuffers/ctf/client/local-charge-fire';
+import { ClientCancelFire } from '../flatbuffers/ctf/client/local-cancel-fire';
 
 export const Decoder = {
 
@@ -53,18 +53,18 @@ export const Decoder = {
         return TeamWon.getRootAsTeamWon(new flatbuffers.ByteBuffer(raw));
     },
     decodeClientMove(raw: Uint8Array) {
-        return LocalMove.getRootAsLocalMove(new flatbuffers.ByteBuffer(raw));
+        return ClientMove.getRootAsClientMove(new flatbuffers.ByteBuffer(raw));
 
     },
     decodeClientFire(raw: Uint8Array) {
-        return LocalFire.getRootAsLocalFire(new flatbuffers.ByteBuffer(raw));
+        return ClientFire.getRootAsClientFire(new flatbuffers.ByteBuffer(raw));
 
     },
     decodeClientCharge(raw: Uint8Array) {
-        return LocalChargeFire.getRootAsLocalChargeFire(new flatbuffers.ByteBuffer(raw));
+        return ClientChargeFire.getRootAsClientChargeFire(new flatbuffers.ByteBuffer(raw));
     },
     decodeClientCancelFire(raw: Uint8Array) {
-        return LocalCancelFire.getRootAsLocalCancelFire(new flatbuffers.ByteBuffer(raw));
+        return ClientCancelFire.getRootAsClientCancelFire(new flatbuffers.ByteBuffer(raw));
     },
 
 

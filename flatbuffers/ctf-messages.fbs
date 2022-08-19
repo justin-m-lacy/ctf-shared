@@ -5,7 +5,11 @@ include "client-messages.fbs";
 
 namespace Ctf;
 
-enum MessageType:byte {
+enum ServerMessage:byte {
+    ClientMove,
+    ClientFire,
+    ClientCancelFire,
+    ClientChargeFire,
     PlayerMove,
     PlayerChargeFire,
     PlayerFire,
