@@ -12,10 +12,10 @@ import { TeamScored } from '../flatbuffers/ctf/team-scored';
 import { TeamWon } from '../flatbuffers/ctf/team-won';
 import { CtfEvent, PlayerEvent, GameEvent } from './types';
 import { MessageType } from 'src/flatbuffers/ctf/message-type';
-import { ClientMove } from '../flatbuffers/ctf/client/local-move';
-import { ClientFire } from '../flatbuffers/ctf/client/local-fire';
-import { ClientChargeFire } from '../flatbuffers/ctf/client/local-charge-fire';
-import { ClientCancelFire } from '../flatbuffers/ctf/client/local-cancel-fire';
+import { ClientMove } from '../flatbuffers/ctf/client/client-move';
+import { ClientFire } from '../flatbuffers/ctf/client/client-fire';
+import { ClientChargeFire } from '../flatbuffers/ctf/client/client-charge-fire';
+import { ClientCancelFire } from '../flatbuffers/ctf/client/client-cancel-fire';
 
 export const Decoder = {
 
