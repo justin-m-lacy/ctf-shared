@@ -26,10 +26,10 @@ export const ClientEncoder = {
 
         ClientFire.startClientFire(builder);
         if (at != null) {
-            ClientFire.addAt(builder, Encoder.makeVec2(at, builder));
+            ClientFire.addAt(builder, Encoder.buildVec2(at, builder));
         }
         if (orientation) {
-            ClientFire.addOrientation(builder, Encoder.makeVec2(orientation, builder));
+            ClientFire.addOrientation(builder, Encoder.buildVec2(orientation, builder));
         }
 
         const offset = ClientFire.endClientFire(builder);
@@ -54,7 +54,7 @@ export const ClientEncoder = {
         builder = builder ?? new flatbuffers.Builder(128);
 
         ClientMove.startClientMove(builder);
-        ClientMove.addTo(builder, Encoder.makeVec2(to, builder));
+        ClientMove.addTo(builder, Encoder.buildVec2(to, builder));
         ClientMove.addWhen(builder, Date.now());
 
         const offset = ClientMove.endClientMove(builder);

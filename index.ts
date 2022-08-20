@@ -1,7 +1,7 @@
 export { PlayerJoin } from 'src/flatbuffers/ctf/player-join';
 export { PlayerLeave } from 'src/flatbuffers/ctf/player-leave';
 
-export { ClientEncoder } from './src/messages/client';
+export { ClientEncoder } from './src/messages/client-encode';
 export { ClientMove } from './src/flatbuffers/ctf/client/client-move';
 export { ClientChargeFire } from './src/flatbuffers/ctf/client/client-charge-fire';
 export { ClientFire } from './src/flatbuffers/ctf/client/client-fire';

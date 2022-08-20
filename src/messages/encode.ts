@@ -44,11 +44,11 @@ export const Encoder = {
 
     },
 
-    buildMatchStart(builder?: flatbuffers.Builder) {
+    buildMatchStart(players: PlayerData[], builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(128);
 
-        const state = this.buildMatchState(builder);
+        const state = this.makeMatchState(players, builder);
         const offset = MatchStart.createMatchStart(builder, state);
 
         builder.finish(offset);
@@ -56,12 +56,12 @@ export const Encoder = {
 
     },
 
-    buildMatchState(builder?: flatbuffers.Builder) {
+    buildMatchState(players: PlayerData[], builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(128);
 
-        const players = MatchState.createPlayersVector(builder, []);
-        const state = MatchState.createMatchState(builder, players);
+        const state = this.makeMatchState(players, builder);
+
         builder.finish(state);
         return builder.asUint8Array();
 
@@ -82,7 +82,7 @@ export const Encoder = {
      * Make matchState without building.
      * Returns index position in builder.
      */
-    makeMatchState(players: PlayerData[], builder?: flatbuffers.Builder) {
+    makeMatchState(players: PlayerData[], builder: flatbuffers.Builder) {
 
         const len = players.length;
         const playerIndices = new Array(len);
@@ -99,7 +99,7 @@ export const Encoder = {
      *  
      * @returns index position of playerInfo in builder.
      */
-    makePlayerInfo(player: PlayerData, builder?: flatbuffers.Builder) {
+    makePlayerInfo(player: PlayerData, builder: flatbuffers.Builder) {
 
         const id = builder.createString(player.id);
         const name = builder.createString(player.name ?? 'unknown');
@@ -172,7 +172,13 @@ export const Encoder = {
 
     },
 
-    buildMatchEnd(scores: number[], builder?: flatbuffers.Builder) {
+    /**
+     * @param scores 
+     * @param terminated - indicates match ended with no result. 
+     * @param builder 
+     * @returns 
+     */
+    buildMatchEnd(scores: number[], terminated: boolean = false, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -180,8 +186,14 @@ export const Encoder = {
         const scoresIndex = MatchEnd.createScoresVector(builder, scores);
 
         MatchEnd.startMatchEnd(builder);
-        MatchEnd.addWinner(builder, winner);
+
         MatchEnd.addScores(builder, scoresIndex);
+        if (terminated) {
+            MatchEnd.addTerminated(builder, terminated);
+        } else {
+            MatchEnd.addWinner(builder, winner);
+        }
+
 
         const offset = MatchEnd.endMatchEnd(builder);
         builder.finish(offset);

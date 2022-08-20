@@ -59,7 +59,7 @@ table MatchStart {
 }
 
 table MatchEnd {
-    winner:byte;
+    winner:byte=-1;
     terminated:bool;
     scores:[uint32];
 }

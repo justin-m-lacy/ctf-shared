@@ -16,8 +16,28 @@ import { ClientMove } from '../flatbuffers/ctf/client/client-move';
 import { ClientFire } from '../flatbuffers/ctf/client/client-fire';
 import { ClientChargeFire } from '../flatbuffers/ctf/client/client-charge-fire';
 import { ClientCancelFire } from '../flatbuffers/ctf/client/client-cancel-fire';
+import { PlayerJoin } from 'src/flatbuffers/ctf/player-join';
+import { PlayerLeave } from '../flatbuffers/ctf/player-leave';
+import { MatchStart } from 'src/flatbuffers/ctf/match-start';
+import { MatchState } from 'src/flatbuffers/ctf/match-state';
 
 export const Decoder = {
+
+    decodePlayerJoin(raw: Uint8Array) {
+        return PlayerJoin.getRootAsPlayerJoin(new flatbuffers.ByteBuffer(raw));
+    },
+    decodePlayerLeave(raw: Uint8Array) {
+        return PlayerLeave.getRootAsPlayerLeave(new flatbuffers.ByteBuffer(raw));
+    },
+    decodeMatchStart(raw: Uint8Array) {
+        return MatchStart.getRootAsMatchStart(new flatbuffers.ByteBuffer(raw));
+    },
+    decodeMatchState(raw: Uint8Array) {
+        return MatchState.getRootAsMatchState(new flatbuffers.ByteBuffer(raw));
+    },
+    decodeMatchEnd(raw: Uint8Array) {
+        return MatchEnd.getRootAsMatchEnd(new flatbuffers.ByteBuffer(raw));
+    },
 
     decodePlayerMove(raw: Uint8Array) {
         return PlayerMove.getRootAsPlayerMove(new flatbuffers.ByteBuffer(raw));
@@ -48,9 +68,6 @@ export const Decoder = {
     },
     decodeTeamScored(raw: Uint8Array) {
         return TeamScored.getRootAsTeamScored(new flatbuffers.ByteBuffer(raw));
-    },
-    decodeMatchEnd(raw: Uint8Array) {
-        return MatchEnd.getRootAsMatchEnd(new flatbuffers.ByteBuffer(raw));
     },
     decodeClientMove(raw: Uint8Array) {
         return ClientMove.getRootAsClientMove(new flatbuffers.ByteBuffer(raw));
