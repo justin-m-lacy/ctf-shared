@@ -6,6 +6,12 @@ include "client-messages.fbs";
 namespace Ctf;
 
 enum MessageType:byte {
+
+    PlayerJoin = 1,
+    PlayerLeave,
+    MatchStart,
+    MatchState,
+    
     ClientMove,
     ClientFire,
     ClientCancelFire,
@@ -16,9 +22,44 @@ enum MessageType:byte {
     PlayerCancelFire,
     PlayerKilled,
     PlayerRespawn,
-    TeamWon,
-    TeamScored,
     FlagTaken,
     FlagDropped,
     FlagReturned,
+    TeamScored,
+    MatchEnd
+
+}
+
+table PlayerInfo {
+    id:string;
+    name:string;
+    team:byte=-1;
+    pos:Vec2;
+}
+
+table PlayerJoin {
+    id:string;
+    name:string;
+    team:byte;
+}
+
+table PlayerLeave {
+    id:string;
+}
+
+table MatchState {
+    players:[PlayerInfo];
+
+}
+
+table MatchStart {
+
+    state:MatchState;
+
+}
+
+table MatchEnd {
+    winner:byte;
+    terminated:bool;
+    scores:[uint32];
 }
