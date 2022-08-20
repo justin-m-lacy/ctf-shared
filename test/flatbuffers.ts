@@ -1,17 +1,39 @@
-import { makePlayerMove, makeTeamWon, makeTeamScored } from '../src/messages/encode';
-import { parseMessage } from '../src/messages/decode';
+
+import * as flatbuffers from 'flatbuffers';
+import { Encoder } from '../src/messages/encode';
+import { Decoder } from '../src/messages/decode';
 import { PlayerMove } from '../flatbuffers/out/ctf/player-move';
-import { TeamWon } from '../flatbuffers/out/ctf/team-won';
+import { MatchEnd } from '../flatbuffers/out/ctf/match-end';
 import { TeamScored } from '../flatbuffers/out/ctf/team-scored';
 
 testPlayerMove();
-testTeamWon();
+testMatchEnd();
 testTeamScored();
 
-function testTeamWon() {
+testReuseBuilder();
 
-    const data = makeTeamWon([10, 20, 12]);
-    const decoded = parseMessage(data) as TeamWon;
+function testReuseBuilder() {
+
+    const builder = new flatbuffers.Builder(128);
+
+    const data = Encoder.makePlayerCancelFire('user1', builder);
+    console.log(`data len: ${data.length}`);
+
+
+    const data2 = Encoder.makeFlagDropped('user2', { x: 1, y: 1 }, 1, builder);
+
+    console.log(`data1 len: ${data.length} data2 len: ${data2.length}`);
+    Decoder.decodeFlagDropped(data2);
+    const cancel = Decoder.decodeCancelFire(data);
+    console.log(`user cancelled: ${cancel.who()}`);
+
+
+}
+
+function testMatchEnd() {
+
+    const data = Encoder.makeMatchEnd([10, 20, 12]);
+    const decoded = Decoder.decodeMatchEnd(data);
 
     const scores = decoded.scoresArray();
 
@@ -21,9 +43,9 @@ function testTeamWon() {
 }
 
 function testTeamScored() {
-    const data = makeTeamScored('scoreUser', 4, 1, [3, 2, 1]);
+    const data = Encoder.makeTeamScored('scoreUser', 4, 1, [3, 2, 1]);
 
-    const decoded = parseMessage(data) as TeamScored;
+    const decoded = Decoder.decodeTeamScored(data) as TeamScored;
 
     const scores = decoded.scoresArray();
     console.log(`Team scored: ${scores.join(',')}`);
@@ -35,8 +57,8 @@ function testTeamScored() {
 function testPlayerMove() {
 
 
-    const data = makePlayerMove('randomUser', { x: 10, y: 10 });
-    const decoded = parseMessage(data) as PlayerMove;
+    const data = Encoder.makePlayerMove('randomUser', { x: 10, y: 10 });
+    const decoded = Decoder.decodePlayerMove(data) as PlayerMove;
 
     const pt = { x: decoded.to().x(), y: decoded.to().y() };
 

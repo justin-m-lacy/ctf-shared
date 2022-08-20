@@ -4,7 +4,7 @@ import { PlayerChargeFire } from '../flatbuffers/ctf/player-charge-fire';
 import { PlayerFire } from '../flatbuffers/ctf/player-fire';
 import { PlayerRespawn } from '../flatbuffers/ctf/player-respawn';
 import { PlayerMove } from '../flatbuffers/ctf/player-move';
-import { TeamWon } from '../flatbuffers/ctf/team-won';
+import { MatchEnd } from '../flatbuffers/ctf/match-end';
 import { FlagDropped } from '../flatbuffers/ctf/flag-dropped';
 import { FlagReturned } from '../flatbuffers/ctf/flag-returned';
 import { FlagTaken } from '../flatbuffers/ctf/flag-taken';
@@ -20,4 +20,4 @@ export type ClientEvent = ClientMove | ClientChargeFire | ClientCancelFire | Cli
 
 export type PlayerEvent = PlayerKilled | PlayerCancelFire | PlayerChargeFire | PlayerFire | PlayerRespawn | PlayerMove;
 
-export type GameEvent = TeamWon | FlagDropped | FlagReturned | FlagTaken | TeamScored;
+export type GameEvent = MatchEnd | FlagDropped | FlagReturned | FlagTaken | TeamScored;

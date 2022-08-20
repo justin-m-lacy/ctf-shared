@@ -2,11 +2,6 @@ include "base-types.fbs";
 
 namespace Ctf;
 
-table TeamWon {
-    winner:ubyte;
-    scores:[uint32];
-}
-
 table FlagTaken {
     who:string;
     flag_team:ubyte;

@@ -12,7 +12,7 @@
     "make-fbs": "rimraf flatbuffers/out && flatc -o flatbuffers/out --ts --gen-all flatbuffers/ctf-messages.fbs",
     "copy-fbs": "rimraf src/flatbuffers/ && copyfiles -u 2 flatbuffers/out/**/* src/flatbuffers/",
     "lint": "eslint -p tsconfig.json",
-    "test": "ts-node run test/flatbuffers.ts"
+    "test": "ts-node test/flatbuffers.ts"
   },
   "author": "",
   "license": "ISC",

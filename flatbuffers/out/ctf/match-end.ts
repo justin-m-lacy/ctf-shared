@@ -2,54 +2,63 @@
 
 import * as flatbuffers from 'flatbuffers';
 
-export class TeamWon {
+export class MatchEnd {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):TeamWon {
+__init(i:number, bb:flatbuffers.ByteBuffer):MatchEnd {
   this.bb_pos = i;
   this.bb = bb;
   return this;
 }
 
-static getRootAsTeamWon(bb:flatbuffers.ByteBuffer, obj?:TeamWon):TeamWon {
-  return (obj || new TeamWon()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+static getRootAsMatchEnd(bb:flatbuffers.ByteBuffer, obj?:MatchEnd):MatchEnd {
+  return (obj || new MatchEnd()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static getSizePrefixedRootAsTeamWon(bb:flatbuffers.ByteBuffer, obj?:TeamWon):TeamWon {
+static getSizePrefixedRootAsMatchEnd(bb:flatbuffers.ByteBuffer, obj?:MatchEnd):MatchEnd {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new TeamWon()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new MatchEnd()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
 winner():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
+  return offset ? this.bb!.readInt8(this.bb_pos + offset) : 0;
+}
+
+terminated():boolean {
+  const offset = this.bb!.__offset(this.bb_pos, 6);
+  return offset ? !!this.bb!.readInt8(this.bb_pos + offset) : false;
 }
 
 scores(index: number):number|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.readUint32(this.bb!.__vector(this.bb_pos + offset) + index * 4) : 0;
 }
 
 scoresLength():number {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.__vector_len(this.bb_pos + offset) : 0;
 }
 
 scoresArray():Uint32Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
+  const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? new Uint32Array(this.bb!.bytes().buffer, this.bb!.bytes().byteOffset + this.bb!.__vector(this.bb_pos + offset), this.bb!.__vector_len(this.bb_pos + offset)) : null;
 }
 
-static startTeamWon(builder:flatbuffers.Builder) {
-  builder.startObject(2);
+static startMatchEnd(builder:flatbuffers.Builder) {
+  builder.startObject(3);
 }
 
 static addWinner(builder:flatbuffers.Builder, winner:number) {
   builder.addFieldInt8(0, winner, 0);
 }
 
+static addTerminated(builder:flatbuffers.Builder, terminated:boolean) {
+  builder.addFieldInt8(1, +terminated, +false);
+}
+
 static addScores(builder:flatbuffers.Builder, scoresOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, scoresOffset, 0);
+  builder.addFieldOffset(2, scoresOffset, 0);
 }
 
 static createScoresVector(builder:flatbuffers.Builder, data:number[]|Uint32Array):flatbuffers.Offset;
@@ -69,15 +78,16 @@ static startScoresVector(builder:flatbuffers.Builder, numElems:number) {
   builder.startVector(4, numElems, 4);
 }
 
-static endTeamWon(builder:flatbuffers.Builder):flatbuffers.Offset {
+static endMatchEnd(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }
 
-static createTeamWon(builder:flatbuffers.Builder, winner:number, scoresOffset:flatbuffers.Offset):flatbuffers.Offset {
-  TeamWon.startTeamWon(builder);
-  TeamWon.addWinner(builder, winner);
-  TeamWon.addScores(builder, scoresOffset);
-  return TeamWon.endTeamWon(builder);
+static createMatchEnd(builder:flatbuffers.Builder, winner:number, terminated:boolean, scoresOffset:flatbuffers.Offset):flatbuffers.Offset {
+  MatchEnd.startMatchEnd(builder);
+  MatchEnd.addWinner(builder, winner);
+  MatchEnd.addTerminated(builder, terminated);
+  MatchEnd.addScores(builder, scoresOffset);
+  return MatchEnd.endMatchEnd(builder);
 }
 }

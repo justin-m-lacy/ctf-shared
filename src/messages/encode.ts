@@ -1,21 +1,123 @@
 import * as flatbuffers from 'flatbuffers';
-import { Point } from '../model/model-types';
+import { Point, PlayerData } from '../model/model-types';
 import { PlayerMove } from '../flatbuffers/ctf/player-move';
 import { PlayerKilled } from '../flatbuffers/ctf/player-killed';
 import { PlayerFire } from '../flatbuffers/ctf/player-fire';
 import { PlayerCancelFire } from '../flatbuffers/ctf/player-cancel-fire';
 import { PlayerChargeFire } from '../flatbuffers/ctf/player-charge-fire';
 import { PlayerRespawn } from '../flatbuffers/ctf/player-respawn';
-import { TeamWon } from '../flatbuffers/ctf/team-won';
+import { MatchEnd } from '../flatbuffers/ctf/match-end';
 import { TeamScored } from '../flatbuffers/ctf/team-scored';
 import { FlagReturned } from '../flatbuffers/ctf/flag-returned';
 import { FlagDropped } from '../flatbuffers/ctf/flag-dropped';
 import { FlagTaken } from '../flatbuffers/ctf/flag-taken';
 import { Vec2 } from '../flatbuffers/ctf/vec2';
 import { maxIndex } from '../util/array';
+import { PlayerJoin } from '../flatbuffers/ctf/player-join';
+import { PlayerLeave } from '../flatbuffers/ctf/player-leave';
+import { MatchState } from '../flatbuffers/ctf/match-state';
+import { MatchStart } from 'src/flatbuffers/ctf/match-start';
+import { PlayerInfo } from 'src/flatbuffers/ctf/player-info';
 
 export const Encoder = {
-    makeFlagReturned(userid: string, at: Point, teamFlag: number, builder?: flatbuffers.Builder) {
+
+    buildPlayerJoin(userid: string, username?: string, team?: number, builder?: flatbuffers.Builder) {
+        builder = builder ?? new flatbuffers.Builder(128);
+        const id = builder.createString(userid);
+        const nameInd = builder.createString(username ?? 'unknown');
+
+        const offset = PlayerJoin.createPlayerJoin(builder, id, nameInd, team);
+        builder.finish(offset);
+
+        return builder.asUint8Array();
+
+    },
+    buildPlayerLeave(userid: string, builder?: flatbuffers.Builder) {
+
+        builder = builder ?? new flatbuffers.Builder(128);
+        const id = builder.createString(userid);
+
+        const offset = PlayerLeave.createPlayerLeave(builder, id);
+        builder.finish(offset);
+
+        return builder.asUint8Array();
+
+    },
+
+    buildMatchStart(builder?: flatbuffers.Builder) {
+
+        builder = builder ?? new flatbuffers.Builder(128);
+
+        const state = this.buildMatchState(builder);
+        const offset = MatchStart.createMatchStart(builder, state);
+
+        builder.finish(offset);
+        return builder.asUint8Array();
+
+    },
+
+    buildMatchState(builder?: flatbuffers.Builder) {
+
+        builder = builder ?? new flatbuffers.Builder(128);
+
+        const players = MatchState.createPlayersVector(builder, []);
+        const state = MatchState.createMatchState(builder, players);
+        builder.finish(state);
+        return builder.asUint8Array();
+
+    },
+
+    buildPlayerInfo(player: PlayerData, builder?: flatbuffers.Builder) {
+
+        builder = builder ?? new flatbuffers.Builder(128);
+
+        const index = this.makePlayerInfo(player, builder);
+        builder.finish(index);
+
+        return builder.asUint8Array();
+
+    },
+
+    /***
+     * Make matchState without building.
+     * Returns index position in builder.
+     */
+    makeMatchState(players: PlayerData[], builder?: flatbuffers.Builder) {
+
+        const len = players.length;
+        const playerIndices = new Array(len);
+        for (let i = 0; i < len; i++) {
+            playerIndices[i] = this.makePlayerInfo(players[i], builder);
+        }
+
+        const playersVector = MatchState.createPlayersVector(builder, playerIndices);
+        return MatchState.createMatchState(builder, playersVector);
+
+    },
+
+    /**
+     *  
+     * @returns index position of playerInfo in builder.
+     */
+    makePlayerInfo(player: PlayerData, builder?: flatbuffers.Builder) {
+
+        const id = builder.createString(player.id);
+        const name = builder.createString(player.name ?? 'unknown');
+        const vec2 = this.buildVec2(player.pos, builder);
+
+        PlayerInfo.startPlayerInfo(builder);
+        PlayerInfo.addId(builder, id);
+        PlayerInfo.addName(builder, name);
+        PlayerInfo.addPos(builder, vec2);
+        if (player.team !== undefined) {
+            PlayerInfo.addTeam(builder, player.team);
+        }
+
+        return PlayerInfo.endPlayerInfo(builder);
+
+    },
+
+    buildFlagReturned(userid: string, at: Point, teamFlag: number, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -23,7 +125,7 @@ export const Encoder = {
 
         FlagReturned.startFlagReturned(builder);
         FlagReturned.addBy(builder, byIndex);
-        FlagReturned.addAt(builder, this.makeVec2(at, builder));
+        FlagReturned.addAt(builder, this.buildVec2(at, builder));
         FlagReturned.addTeamFlag(builder, teamFlag)
 
         const offset = FlagReturned.endFlagReturned(builder);
@@ -34,7 +136,7 @@ export const Encoder = {
     },
 
 
-    makeFlagTaken(userid: string, at: Point, flagTeam: number, builder?: flatbuffers.Builder) {
+    buildFlagTaken(userid: string, at: Point, flagTeam: number, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -42,7 +144,7 @@ export const Encoder = {
 
         FlagTaken.startFlagTaken(builder);
         FlagTaken.addWho(builder, whoIndex);
-        FlagTaken.addAt(builder, this.makeVec2(at, builder));
+        FlagTaken.addAt(builder, this.buildVec2(at, builder));
         FlagTaken.addFlagTeam(builder, flagTeam);
 
         const offset = FlagTaken.endFlagTaken(builder);
@@ -52,7 +154,7 @@ export const Encoder = {
 
     },
 
-    makeFlagDropped(userid: string, at: Point, flagTeam: number, builder?: flatbuffers.Builder) {
+    buildFlagDropped(userid: string, at: Point, flagTeam: number, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -60,7 +162,7 @@ export const Encoder = {
 
         FlagDropped.startFlagDropped(builder);
         FlagDropped.addBy(builder, whoIndex);
-        FlagDropped.addAt(builder, this.makeVec2(at, builder));
+        FlagDropped.addAt(builder, this.buildVec2(at, builder));
         FlagDropped.addFlagTeam(builder, flagTeam);
 
         const offset = FlagDropped.endFlagDropped(builder);
@@ -70,30 +172,30 @@ export const Encoder = {
 
     },
 
-    makeTeamWon(scores: number[], builder?: flatbuffers.Builder) {
+    buildMatchEnd(scores: number[], builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
         const winner = maxIndex(scores);
-        const scoresIndex = TeamWon.createScoresVector(builder, scores);
+        const scoresIndex = MatchEnd.createScoresVector(builder, scores);
 
-        TeamWon.startTeamWon(builder);
-        TeamWon.addWinner(builder, winner);
-        TeamWon.addScores(builder, scoresIndex);
+        MatchEnd.startMatchEnd(builder);
+        MatchEnd.addWinner(builder, winner);
+        MatchEnd.addScores(builder, scoresIndex);
 
-        const offset = TeamWon.endTeamWon(builder);
+        const offset = MatchEnd.endMatchEnd(builder);
         builder.finish(offset);
 
         return builder.asUint8Array();
 
     },
 
-    makeTeamScored(userid: string, scoringTeam: number, flagTeam: number, scores: number[], builder?: flatbuffers.Builder) {
+    buildTeamScored(userid: string, scoringTeam: number, flagTeam: number, scores: number[], builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
         const whoIndex = builder.createString(userid);
-        const scoresIndex = TeamWon.createScoresVector(builder, scores);
+        const scoresIndex = MatchEnd.createScoresVector(builder, scores);
 
         TeamScored.startTeamScored(builder);
         TeamScored.addWho(builder, whoIndex);
@@ -108,7 +210,7 @@ export const Encoder = {
 
     },
 
-    makePlayerChargeFire(userid: string, at: Point, builder?: flatbuffers.Builder) {
+    buildPlayerChargeFire(userid: string, at: Point, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -116,7 +218,7 @@ export const Encoder = {
 
         PlayerChargeFire.startPlayerChargeFire(builder);
         PlayerChargeFire.addWho(builder, whoIndex);
-        PlayerChargeFire.addAt(builder, this.makeVec2(at, builder));
+        PlayerChargeFire.addAt(builder, this.buildVec2(at, builder));
         PlayerChargeFire.addWhen(builder, Date.now());
 
         const offset = PlayerChargeFire.endPlayerChargeFire(builder);
@@ -125,7 +227,7 @@ export const Encoder = {
         return builder.asUint8Array();
 
     },
-    makePlayerCancelFire(userid: string, builder?: flatbuffers.Builder) {
+    buildPlayerCancelFire(userid: string, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -141,7 +243,7 @@ export const Encoder = {
 
     },
 
-    makePlayerKilled(userid: string, by: string, at: Point, builder?: flatbuffers.Builder) {
+    buildPlayerKilled(userid: string, by: string, at: Point, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -151,7 +253,7 @@ export const Encoder = {
         PlayerKilled.startPlayerKilled(builder);
         PlayerKilled.addWho(builder, whoIndex);
         PlayerKilled.addBy(builder, byIndex);
-        PlayerKilled.addAt(builder, this.makeVec2(at, builder));
+        PlayerKilled.addAt(builder, this.buildVec2(at, builder));
 
         const offset = PlayerKilled.endPlayerKilled(builder);
         builder.finish(offset);
@@ -160,7 +262,7 @@ export const Encoder = {
 
     },
 
-    makePlayerFire(userid: string, at: Point, orientation: Point, power: number, builder?: flatbuffers.Builder) {
+    buildPlayerFire(userid: string, at: Point, orientation: Point, power: number, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -168,9 +270,9 @@ export const Encoder = {
 
         PlayerFire.startPlayerFire(builder);
         PlayerFire.addWho(builder, whoIndex);
-        PlayerFire.addAt(builder, this.makeVec2(at, builder));
+        PlayerFire.addAt(builder, this.buildVec2(at, builder));
         PlayerFire.addWhen(builder, Date.now());
-        PlayerFire.addOrientation(builder, this.makeVec2(orientation, builder));
+        PlayerFire.addOrientation(builder, this.buildVec2(orientation, builder));
         PlayerFire.addPower(builder, power);
 
         const offset = PlayerFire.endPlayerFire(builder);
@@ -180,7 +282,7 @@ export const Encoder = {
 
     },
 
-    makePlayerMove(userid: string, to: Point, builder?: flatbuffers.Builder) {
+    buildPlayerMove(userid: string, to: Point, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -188,7 +290,7 @@ export const Encoder = {
 
         PlayerMove.startPlayerMove(builder);
         PlayerMove.addWho(builder, whoIndex);
-        PlayerMove.addTo(builder, this.makeVec2(to, builder));
+        PlayerMove.addTo(builder, this.buildVec2(to, builder));
         PlayerMove.addWhen(builder, Date.now());
 
         const offset = PlayerMove.endPlayerMove(builder);
@@ -198,7 +300,7 @@ export const Encoder = {
 
     },
 
-    makePlayerRespawn(userid: string, at: Point, builder?: flatbuffers.Builder) {
+    buildPlayerRespawn(userid: string, at: Point, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -206,7 +308,7 @@ export const Encoder = {
 
         PlayerRespawn.startPlayerRespawn(builder);
         PlayerRespawn.addWho(builder, whoIndex);
-        PlayerRespawn.addAt(builder, this.makeVec2(at, builder));
+        PlayerRespawn.addAt(builder, this.buildVec2(at, builder));
 
         const offset = PlayerRespawn.endPlayerRespawn(builder);
         builder.finish(offset);
@@ -215,7 +317,7 @@ export const Encoder = {
 
     },
 
-    makeVec2(to: Point, builder: flatbuffers.Builder) {
+    buildVec2(to: Point, builder: flatbuffers.Builder) {
 
         return Vec2.createVec2(builder, to.x, to.y);
 

@@ -4,7 +4,7 @@
     "baseUrl": ".",
     "outDir": "lib",
     "target": "esnext",
-    "module": "esnext",
+    "module": "commonjs",
     "typeRoots": [
       "./node_modules"
     ],
@@ -32,7 +32,7 @@
   ],
   "exclude": [
     "node_modules",
-    "flatbuffers",
+    "flatbuffers/**/*",
     "lib",
     "types"
   ]
