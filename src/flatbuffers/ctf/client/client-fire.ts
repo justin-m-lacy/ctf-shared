@@ -28,9 +28,9 @@ at(obj?:Vec2):Vec2|null {
   return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-orientation(obj?:Vec2):Vec2|null {
+rotation():number {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
+  return offset ? this.bb!.readInt32(this.bb_pos + offset) : 0;
 }
 
 static startClientFire(builder:flatbuffers.Builder) {
@@ -41,8 +41,8 @@ static addAt(builder:flatbuffers.Builder, atOffset:flatbuffers.Offset) {
   builder.addFieldStruct(0, atOffset, 0);
 }
 
-static addOrientation(builder:flatbuffers.Builder, orientationOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(1, orientationOffset, 0);
+static addRotation(builder:flatbuffers.Builder, rotation:number) {
+  builder.addFieldInt32(1, rotation, 0);
 }
 
 static endClientFire(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -50,4 +50,10 @@ static endClientFire(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
+static createClientFire(builder:flatbuffers.Builder, atOffset:flatbuffers.Offset, rotation:number):flatbuffers.Offset {
+  ClientFire.startClientFire(builder);
+  ClientFire.addAt(builder, atOffset);
+  ClientFire.addRotation(builder, rotation);
+  return ClientFire.endClientFire(builder);
+}
 }

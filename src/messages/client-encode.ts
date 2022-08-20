@@ -20,7 +20,7 @@ export const ClientEncoder = {
 
     },
 
-    makeFire(at?: Point, orientation?: Point, builder?: flatbuffers.Builder) {
+    makeFire(at?: Point, rotation?: number, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(128);
 
@@ -28,8 +28,8 @@ export const ClientEncoder = {
         if (at != null) {
             ClientFire.addAt(builder, Encoder.buildVec2(at, builder));
         }
-        if (orientation) {
-            ClientFire.addOrientation(builder, Encoder.buildVec2(orientation, builder));
+        if (rotation) {
+            ClientFire.addRotation(builder, rotation);
         }
 
         const offset = ClientFire.endClientFire(builder);

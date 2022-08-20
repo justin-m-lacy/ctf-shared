@@ -7,6 +7,7 @@ table PlayerRespawn {
     who:string;
     when:int32;
     at:Vec2;
+    rotation:int;
 }
 
 table PlayerMove {
@@ -28,7 +29,7 @@ table PlayerFire {
     who:string;
     at:Vec2;
     when:int32;
-    orientation:Vec2;
+    rotation:int;
     power:float;
 }
 

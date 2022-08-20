@@ -13,7 +13,7 @@ table ClientChargeFire {
 
 table ClientFire {
     at:Vec2;
-    orientation:Vec2;
+    rotation:int;
 }
 
 table ClientCancelFire {

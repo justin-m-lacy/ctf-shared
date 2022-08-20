@@ -40,9 +40,9 @@ when():number {
   return offset ? this.bb!.readInt32(this.bb_pos + offset) : 0;
 }
 
-orientation(obj?:Vec2):Vec2|null {
+rotation():number {
   const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
+  return offset ? this.bb!.readInt32(this.bb_pos + offset) : 0;
 }
 
 power():number {
@@ -66,8 +66,8 @@ static addWhen(builder:flatbuffers.Builder, when:number) {
   builder.addFieldInt32(2, when, 0);
 }
 
-static addOrientation(builder:flatbuffers.Builder, orientationOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(3, orientationOffset, 0);
+static addRotation(builder:flatbuffers.Builder, rotation:number) {
+  builder.addFieldInt32(3, rotation, 0);
 }
 
 static addPower(builder:flatbuffers.Builder, power:number) {

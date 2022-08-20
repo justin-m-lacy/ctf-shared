@@ -42,13 +42,18 @@ team():number {
   return offset ? this.bb!.readInt8(this.bb_pos + offset) : -1;
 }
 
-pos(obj?:Vec2):Vec2|null {
+rotation():number {
   const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? this.bb!.readInt32(this.bb_pos + offset) : 0;
+}
+
+pos(obj?:Vec2):Vec2|null {
+  const offset = this.bb!.__offset(this.bb_pos, 12);
   return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
 static startPlayerInfo(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+  builder.startObject(5);
 }
 
 static addId(builder:flatbuffers.Builder, idOffset:flatbuffers.Offset) {
@@ -63,8 +68,12 @@ static addTeam(builder:flatbuffers.Builder, team:number) {
   builder.addFieldInt8(2, team, -1);
 }
 
+static addRotation(builder:flatbuffers.Builder, rotation:number) {
+  builder.addFieldInt32(3, rotation, 0);
+}
+
 static addPos(builder:flatbuffers.Builder, posOffset:flatbuffers.Offset) {
-  builder.addFieldStruct(3, posOffset, 0);
+  builder.addFieldStruct(4, posOffset, 0);
 }
 
 static endPlayerInfo(builder:flatbuffers.Builder):flatbuffers.Offset {

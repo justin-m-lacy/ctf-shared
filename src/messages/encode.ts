@@ -109,6 +109,7 @@ export const Encoder = {
         PlayerInfo.addId(builder, id);
         PlayerInfo.addName(builder, name);
         PlayerInfo.addPos(builder, vec2);
+        PlayerInfo.addRotation(builder, player.rotation);
         if (player.team !== undefined) {
             PlayerInfo.addTeam(builder, player.team);
         }
@@ -274,7 +275,7 @@ export const Encoder = {
 
     },
 
-    buildPlayerFire(userid: string, at: Point, orientation: Point, power: number, builder?: flatbuffers.Builder) {
+    buildPlayerFire(userid: string, at: Point, rotation: number, power: number, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -284,7 +285,7 @@ export const Encoder = {
         PlayerFire.addWho(builder, whoIndex);
         PlayerFire.addAt(builder, this.buildVec2(at, builder));
         PlayerFire.addWhen(builder, Date.now());
-        PlayerFire.addOrientation(builder, this.buildVec2(orientation, builder));
+        PlayerFire.addRotation(builder, rotation);
         PlayerFire.addPower(builder, power);
 
         const offset = PlayerFire.endPlayerFire(builder);
@@ -312,7 +313,7 @@ export const Encoder = {
 
     },
 
-    buildPlayerRespawn(userid: string, at: Point, builder?: flatbuffers.Builder) {
+    buildPlayerRespawn(userid: string, at: Point, rotation: number, builder?: flatbuffers.Builder) {
 
         builder = builder ?? new flatbuffers.Builder(1024);
 
@@ -321,6 +322,7 @@ export const Encoder = {
         PlayerRespawn.startPlayerRespawn(builder);
         PlayerRespawn.addWho(builder, whoIndex);
         PlayerRespawn.addAt(builder, this.buildVec2(at, builder));
+        PlayerRespawn.addRotation(builder, rotation);
 
         const offset = PlayerRespawn.endPlayerRespawn(builder);
         builder.finish(offset);

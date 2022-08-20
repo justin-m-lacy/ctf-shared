@@ -40,8 +40,13 @@ at(obj?:Vec2):Vec2|null {
   return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
+rotation():number {
+  const offset = this.bb!.__offset(this.bb_pos, 10);
+  return offset ? this.bb!.readInt32(this.bb_pos + offset) : 0;
+}
+
 static startPlayerRespawn(builder:flatbuffers.Builder) {
-  builder.startObject(3);
+  builder.startObject(4);
 }
 
 static addWho(builder:flatbuffers.Builder, whoOffset:flatbuffers.Offset) {
@@ -54,6 +59,10 @@ static addWhen(builder:flatbuffers.Builder, when:number) {
 
 static addAt(builder:flatbuffers.Builder, atOffset:flatbuffers.Offset) {
   builder.addFieldStruct(2, atOffset, 0);
+}
+
+static addRotation(builder:flatbuffers.Builder, rotation:number) {
+  builder.addFieldInt32(3, rotation, 0);
 }
 
 static endPlayerRespawn(builder:flatbuffers.Builder):flatbuffers.Offset {

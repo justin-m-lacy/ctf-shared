@@ -9,6 +9,7 @@ enum MessageType:byte {
 
     PlayerJoin = 1,
     PlayerLeave,
+    PlayersLeave,
     MatchStart,
     MatchState,
     
@@ -34,6 +35,7 @@ table PlayerInfo {
     id:string;
     name:string;
     team:byte=-1;
+    rotation:int;
     pos:Vec2;
 }
 
@@ -45,6 +47,10 @@ table PlayerJoin {
 
 table PlayerLeave {
     id:string;
+}
+
+table PlayersLeave {
+    id:[string];
 }
 
 table MatchState {

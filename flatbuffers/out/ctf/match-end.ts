@@ -22,7 +22,7 @@ static getSizePrefixedRootAsMatchEnd(bb:flatbuffers.ByteBuffer, obj?:MatchEnd):M
 
 winner():number {
   const offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? this.bb!.readInt8(this.bb_pos + offset) : 0;
+  return offset ? this.bb!.readInt8(this.bb_pos + offset) : -1;
 }
 
 terminated():boolean {
@@ -50,7 +50,7 @@ static startMatchEnd(builder:flatbuffers.Builder) {
 }
 
 static addWinner(builder:flatbuffers.Builder, winner:number) {
-  builder.addFieldInt8(0, winner, 0);
+  builder.addFieldInt8(0, winner, -1);
 }
 
 static addTerminated(builder:flatbuffers.Builder, terminated:boolean) {
