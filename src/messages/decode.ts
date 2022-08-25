@@ -10,16 +10,14 @@ import { FlagDropped } from '../flatbuffers/ctf/flag-dropped';
 import { FlagReturned } from '../flatbuffers/ctf/flag-returned';
 import { TeamScored } from '../flatbuffers/ctf/team-scored';
 import { MatchEnd } from '../flatbuffers/ctf/match-end';
-import { CtfEvent } from './types';
-import { MessageType } from './src/flatbuffers/ctf/message-type';
 import { ClientMove } from '../flatbuffers/ctf/client/client-move';
 import { ClientFire } from '../flatbuffers/ctf/client/client-fire';
 import { ClientChargeFire } from '../flatbuffers/ctf/client/client-charge-fire';
 import { ClientCancelFire } from '../flatbuffers/ctf/client/client-cancel-fire';
-import { PlayerJoin } from './src/flatbuffers/ctf/player-join';
+import { PlayerJoin } from '../flatbuffers/ctf/player-join';
 import { PlayerLeave } from '../flatbuffers/ctf/player-leave';
-import { MatchStart } from './src/flatbuffers/ctf/match-start';
-import { MatchState } from './src/flatbuffers/ctf/match-state';
+import { MatchStart } from '../flatbuffers/ctf/match-start';
+import { MatchState } from '../flatbuffers/ctf/match-state';
 
 export const Decoder = {
 

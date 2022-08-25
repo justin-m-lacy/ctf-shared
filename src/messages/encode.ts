@@ -16,8 +16,8 @@ import { maxIndex } from '../util/array';
 import { PlayerJoin } from '../flatbuffers/ctf/player-join';
 import { PlayerLeave } from '../flatbuffers/ctf/player-leave';
 import { MatchState } from '../flatbuffers/ctf/match-state';
-import { MatchStart } from './src/flatbuffers/ctf/match-start';
-import { PlayerInfo } from './src/flatbuffers/ctf/player-info';
+import { MatchStart } from '../flatbuffers/ctf/match-start';
+import { PlayerInfo } from '../flatbuffers/ctf/player-info';
 
 export const Encoder = {
 
