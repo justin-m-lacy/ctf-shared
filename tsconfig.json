@@ -10,7 +10,7 @@
     ],
     "importsNotUsedAsValues": "remove",
     "declaration": true,
-    "declarationDir": "types",
+    "declarationDir": "lib/types",
     "sourceMap": true,
     "incremental": true,
     "skipLibCheck": true,

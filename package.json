@@ -6,7 +6,7 @@
   "directories": {
     "test": "test"
   },
-  "types": "types/index.d.ts",
+  "types": "lib/types/index.d.ts",
   "scripts": {
     "build": "tsc",
     "prepare": "tsc",
