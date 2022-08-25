@@ -1,10 +1,14 @@
 {
   "name": "ctf-shared",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "lib/index.js",
   "directories": {
     "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/justin-m-lacy/ctf-shared"
   },
   "types": "lib/types/index.d.ts",
   "scripts": {
