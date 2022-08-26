@@ -8,6 +8,9 @@
     "typeRoots": [
       "./node_modules",
     ],
+    "types": [
+      "node"
+    ],
     "importsNotUsedAsValues": "remove",
     "declaration": true,
     "declarationDir": "lib/types",
@@ -22,9 +25,14 @@
     "lib": [
       "esnext"
     ],
-    "types": [
-      "node"
-    ]
+    "paths": {
+      "src/*": [
+        "./src/*"
+      ],
+      "buffers-out/*": [
+        "./buffers-out/*"
+      ]
+    }
   },
   "include": [
     "./index.ts",
