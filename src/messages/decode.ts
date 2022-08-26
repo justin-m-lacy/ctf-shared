@@ -18,6 +18,8 @@ import { PlayerJoin } from 'buffers-out/ctf/player-join';
 import { PlayerLeave } from 'buffers-out/ctf/player-leave';
 import { MatchStart } from 'buffers-out/ctf/match-start';
 import { MatchState } from 'buffers-out/ctf/match-state';
+import { RoomChat } from '../../buffers-out/ctf/chat/room-chat';
+import { TeamChat } from 'buffers-out/ctf/chat/team-chat';
 
 export const Decoder = {
 
@@ -67,6 +69,9 @@ export const Decoder = {
     decodeTeamScored(raw: Uint8Array) {
         return TeamScored.getRootAsTeamScored(new flatbuffers.ByteBuffer(raw));
     },
+
+    /// Client Messages
+
     decodeClientMove(raw: Uint8Array) {
         return ClientMove.getRootAsClientMove(new flatbuffers.ByteBuffer(raw));
 
@@ -80,6 +85,15 @@ export const Decoder = {
     },
     decodeClientCancelFire(raw: Uint8Array) {
         return ClientCancelFire.getRootAsClientCancelFire(new flatbuffers.ByteBuffer(raw));
+    },
+
+    /// Chat Messages.
+    decodeRoomMessage(raw: Uint8Array) {
+        return RoomChat.getRootAsRoomChat(new flatbuffers.ByteBuffer(raw));
+    },
+
+    decodeTeamMessage(raw: Uint8Array) {
+        return TeamChat.getRootAsTeamChat(new flatbuffers.ByteBuffer(raw));
     }
 
 }

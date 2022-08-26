@@ -9,8 +9,8 @@ table RoomChat {
 }
 
 table TeamChat {
+    /// Team should be inferred by the user?
+    team:string;
     from:string;
     message:string;
-    /// Team should be inferred by the user.
-    team:string;
 }

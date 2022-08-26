@@ -20,26 +20,26 @@ static getSizePrefixedRootAsTeamChat(bb:flatbuffers.ByteBuffer, obj?:TeamChat):T
   return (obj || new TeamChat()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
+/**
+ * Team should be inferred by the user?
+ */
+team():string|null
+team(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+team(optionalEncoding?:any):string|Uint8Array|null {
+  const offset = this.bb!.__offset(this.bb_pos, 4);
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
+}
+
 from():string|null
 from(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 from(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 4);
+  const offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 message():string|null
 message(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
 message(optionalEncoding?:any):string|Uint8Array|null {
-  const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
-}
-
-/**
- * Team should be inferred by the user.
- */
-team():string|null
-team(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
-team(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
@@ -48,16 +48,16 @@ static startTeamChat(builder:flatbuffers.Builder) {
   builder.startObject(3);
 }
 
+static addTeam(builder:flatbuffers.Builder, teamOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(0, teamOffset, 0);
+}
+
 static addFrom(builder:flatbuffers.Builder, fromOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, fromOffset, 0);
+  builder.addFieldOffset(1, fromOffset, 0);
 }
 
 static addMessage(builder:flatbuffers.Builder, messageOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, messageOffset, 0);
-}
-
-static addTeam(builder:flatbuffers.Builder, teamOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(2, teamOffset, 0);
+  builder.addFieldOffset(2, messageOffset, 0);
 }
 
 static endTeamChat(builder:flatbuffers.Builder):flatbuffers.Offset {
@@ -65,11 +65,11 @@ static endTeamChat(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 }
 
-static createTeamChat(builder:flatbuffers.Builder, fromOffset:flatbuffers.Offset, messageOffset:flatbuffers.Offset, teamOffset:flatbuffers.Offset):flatbuffers.Offset {
+static createTeamChat(builder:flatbuffers.Builder, teamOffset:flatbuffers.Offset, fromOffset:flatbuffers.Offset, messageOffset:flatbuffers.Offset):flatbuffers.Offset {
   TeamChat.startTeamChat(builder);
+  TeamChat.addTeam(builder, teamOffset);
   TeamChat.addFrom(builder, fromOffset);
   TeamChat.addMessage(builder, messageOffset);
-  TeamChat.addTeam(builder, teamOffset);
   return TeamChat.endTeamChat(builder);
 }
 }
