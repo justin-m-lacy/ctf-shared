@@ -2,21 +2,27 @@ include "base-types.fbs";
 include "game-messages.fbs";
 include "player-messages.fbs";
 include "client-messages.fbs";
+include "chat-messages.fbs";
 
 namespace Ctf;
 
 enum MessageType:byte {
 
+    /// Player and Match State.
     PlayerJoin = 1,
     PlayerLeave,
     PlayersLeave,
     MatchStart,
+    MatchEnd,
     MatchState,
     
+    /// Client to Server Messages.
     ClientMove,
     ClientFire,
     ClientCancelFire,
     ClientChargeFire,
+
+    /// Server to client messages.
     PlayerMove,
     PlayerChargeFire,
     PlayerFire,
@@ -27,14 +33,17 @@ enum MessageType:byte {
     FlagDropped,
     FlagReturned,
     TeamScored,
-    MatchEnd
+
+    /// Chat Messages
+    RoomChat,
+    TeamChat
 
 }
 
 table PlayerInfo {
     id:string;
     name:string;
-    team:byte=-1;
+    team:string;
     rotation:int;
     pos:Vec2;
 }
@@ -42,7 +51,7 @@ table PlayerInfo {
 table PlayerJoin {
     id:string;
     name:string;
-    team:byte;
+    team:string;
 }
 
 table PlayerLeave {

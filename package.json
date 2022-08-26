@@ -1,6 +1,6 @@
 {
   "name": "ctf-shared",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "",
   "main": "lib/index.js",
   "directories": {
@@ -14,8 +14,7 @@
   "scripts": {
     "build": "tsc",
     "prepare": "tsc",
-    "make-fbs": "rimraf flatbuffers/out && flatc -o flatbuffers/out --ts --gen-all flatbuffers/ctf-messages.fbs",
-    "copy-fbs": "rimraf src/flatbuffers/ && copyfiles -u 2 flatbuffers/out/**/* src/flatbuffers/",
+    "make-fbs": "rimraf buffers-out && flatc -o buffers-out --ts --gen-all flatbuffers/ctf-messages.fbs",
     "lint": "eslint -p tsconfig.json",
     "test": "ts-node test/flatbuffers.ts"
   },
@@ -25,7 +24,6 @@
     "flatbuffers": "^2.0.6"
   },
   "devDependencies": {
-    "copyfiles": "^2.4.1",
     "eslint": "^8.22.0",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",

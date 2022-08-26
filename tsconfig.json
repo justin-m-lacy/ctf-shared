@@ -28,11 +28,12 @@
   },
   "include": [
     "./index.ts",
-    "./src/**/*"
+    "./src/**/*",
+    "./buffers-out/**/*"
   ],
   "exclude": [
     "node_modules",
-    "./flatbuffers/**/*",
+    "flatbuffers",
     "lib",
     "types"
   ]

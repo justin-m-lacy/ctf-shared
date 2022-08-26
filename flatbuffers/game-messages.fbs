@@ -4,14 +4,14 @@ namespace Ctf;
 
 table FlagTaken {
     who:string;
-    flag_team:ubyte;
+    flag_team:string;
     at:Vec2;
 }
 
 table TeamScored {
     who:string;
-    team:ubyte;
-    flag_team:ubyte;
+    team:string;
+    flag_team:string;
     scores:[uint32];
 }
 
@@ -24,11 +24,11 @@ table PlayerKilled {
 table FlagDropped {
     by:string;
     at:Vec2;
-    flag_team:ubyte;
+    flag_team:string;
 }
 
 table FlagReturned {
     by:string;
     at:Vec2;
-    team_flag:ubyte;
+    team_flag:string;
 }

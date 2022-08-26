@@ -5,22 +5,22 @@ import * as flatbuffers from 'flatbuffers';
 import { Vec2 } from '../ctf/vec2';
 
 
-export class FlagDropped {
+export class FlagReturned {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):FlagDropped {
+__init(i:number, bb:flatbuffers.ByteBuffer):FlagReturned {
   this.bb_pos = i;
   this.bb = bb;
   return this;
 }
 
-static getRootAsFlagDropped(bb:flatbuffers.ByteBuffer, obj?:FlagDropped):FlagDropped {
-  return (obj || new FlagDropped()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+static getRootAsFlagReturned(bb:flatbuffers.ByteBuffer, obj?:FlagReturned):FlagReturned {
+  return (obj || new FlagReturned()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static getSizePrefixedRootAsFlagDropped(bb:flatbuffers.ByteBuffer, obj?:FlagDropped):FlagDropped {
+static getSizePrefixedRootAsFlagReturned(bb:flatbuffers.ByteBuffer, obj?:FlagReturned):FlagReturned {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new FlagDropped()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new FlagReturned()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
 by():string|null
@@ -35,12 +35,14 @@ at(obj?:Vec2):Vec2|null {
   return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-flagTeam():number {
+teamFlag():string|null
+teamFlag(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+teamFlag(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-static startFlagDropped(builder:flatbuffers.Builder) {
+static startFlagReturned(builder:flatbuffers.Builder) {
   builder.startObject(3);
 }
 
@@ -52,11 +54,11 @@ static addAt(builder:flatbuffers.Builder, atOffset:flatbuffers.Offset) {
   builder.addFieldStruct(1, atOffset, 0);
 }
 
-static addFlagTeam(builder:flatbuffers.Builder, flagTeam:number) {
-  builder.addFieldInt8(2, flagTeam, 0);
+static addTeamFlag(builder:flatbuffers.Builder, teamFlagOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, teamFlagOffset, 0);
 }
 
-static endFlagDropped(builder:flatbuffers.Builder):flatbuffers.Offset {
+static endFlagReturned(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }

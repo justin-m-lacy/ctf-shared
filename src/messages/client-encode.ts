@@ -1,10 +1,10 @@
 import { Point } from '../model/model-types';
 import * as flatbuffers from 'flatbuffers';
 import { Encoder } from './encode';
-import { ClientMove } from '../flatbuffers/ctf/client/client-move';
-import { ClientFire } from '../flatbuffers/ctf/client/client-fire';
-import { ClientChargeFire } from '../flatbuffers/ctf/client/client-charge-fire';
-import { ClientCancelFire } from '../flatbuffers/ctf/client/client-cancel-fire';
+import { ClientMove } from '/buffers-out/ctf/client/client-move';
+import { ClientFire } from '/buffers-out/ctf/client/client-fire';
+import { ClientChargeFire } from '/buffers-out/ctf/client/client-charge-fire';
+import { ClientCancelFire } from '/buffers-out/ctf/client/client-cancel-fire';
 
 export const ClientEncoder = {
 

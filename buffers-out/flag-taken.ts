@@ -5,22 +5,22 @@ import * as flatbuffers from 'flatbuffers';
 import { Vec2 } from '../ctf/vec2';
 
 
-export class PlayerRespawn {
+export class FlagTaken {
   bb: flatbuffers.ByteBuffer|null = null;
   bb_pos = 0;
-__init(i:number, bb:flatbuffers.ByteBuffer):PlayerRespawn {
+__init(i:number, bb:flatbuffers.ByteBuffer):FlagTaken {
   this.bb_pos = i;
   this.bb = bb;
   return this;
 }
 
-static getRootAsPlayerRespawn(bb:flatbuffers.ByteBuffer, obj?:PlayerRespawn):PlayerRespawn {
-  return (obj || new PlayerRespawn()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+static getRootAsFlagTaken(bb:flatbuffers.ByteBuffer, obj?:FlagTaken):FlagTaken {
+  return (obj || new FlagTaken()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
-static getSizePrefixedRootAsPlayerRespawn(bb:flatbuffers.ByteBuffer, obj?:PlayerRespawn):PlayerRespawn {
+static getSizePrefixedRootAsFlagTaken(bb:flatbuffers.ByteBuffer, obj?:FlagTaken):FlagTaken {
   bb.setPosition(bb.position() + flatbuffers.SIZE_PREFIX_LENGTH);
-  return (obj || new PlayerRespawn()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+  return (obj || new FlagTaken()).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 }
 
 who():string|null
@@ -30,9 +30,11 @@ who(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-when():number {
+flagTeam():string|null
+flagTeam(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+flagTeam(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? this.bb!.readInt32(this.bb_pos + offset) : 0;
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 at(obj?:Vec2):Vec2|null {
@@ -40,32 +42,23 @@ at(obj?:Vec2):Vec2|null {
   return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-rotation():number {
-  const offset = this.bb!.__offset(this.bb_pos, 10);
-  return offset ? this.bb!.readInt32(this.bb_pos + offset) : 0;
-}
-
-static startPlayerRespawn(builder:flatbuffers.Builder) {
-  builder.startObject(4);
+static startFlagTaken(builder:flatbuffers.Builder) {
+  builder.startObject(3);
 }
 
 static addWho(builder:flatbuffers.Builder, whoOffset:flatbuffers.Offset) {
   builder.addFieldOffset(0, whoOffset, 0);
 }
 
-static addWhen(builder:flatbuffers.Builder, when:number) {
-  builder.addFieldInt32(1, when, 0);
+static addFlagTeam(builder:flatbuffers.Builder, flagTeamOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(1, flagTeamOffset, 0);
 }
 
 static addAt(builder:flatbuffers.Builder, atOffset:flatbuffers.Offset) {
   builder.addFieldStruct(2, atOffset, 0);
 }
 
-static addRotation(builder:flatbuffers.Builder, rotation:number) {
-  builder.addFieldInt32(3, rotation, 0);
-}
-
-static endPlayerRespawn(builder:flatbuffers.Builder):flatbuffers.Offset {
+static endFlagTaken(builder:flatbuffers.Builder):flatbuffers.Offset {
   const offset = builder.endObject();
   return offset;
 }

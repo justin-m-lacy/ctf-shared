@@ -35,9 +35,11 @@ at(obj?:Vec2):Vec2|null {
   return offset ? (obj || new Vec2()).__init(this.bb_pos + offset, this.bb!) : null;
 }
 
-flagTeam():number {
+flagTeam():string|null
+flagTeam(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+flagTeam(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readUint8(this.bb_pos + offset) : 0;
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 static startFlagDropped(builder:flatbuffers.Builder) {
@@ -52,8 +54,8 @@ static addAt(builder:flatbuffers.Builder, atOffset:flatbuffers.Offset) {
   builder.addFieldStruct(1, atOffset, 0);
 }
 
-static addFlagTeam(builder:flatbuffers.Builder, flagTeam:number) {
-  builder.addFieldInt8(2, flagTeam, 0);
+static addFlagTeam(builder:flatbuffers.Builder, flagTeamOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, flagTeamOffset, 0);
 }
 
 static endFlagDropped(builder:flatbuffers.Builder):flatbuffers.Offset {

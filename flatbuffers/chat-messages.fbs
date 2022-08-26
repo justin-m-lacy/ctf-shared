@@ -1,0 +1,16 @@
+include "base-types.fbs";
+
+namespace Ctf.Chat;
+
+table RoomChat {
+    /// from probably not required.
+    from:string;
+    message:string;
+}
+
+table TeamChat {
+    from:string;
+    message:string;
+    /// Team should be inferred by the user.
+    team:string;
+}

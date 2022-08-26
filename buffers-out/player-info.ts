@@ -37,9 +37,11 @@ name(optionalEncoding?:any):string|Uint8Array|null {
   return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
-team():number {
+team():string|null
+team(optionalEncoding:flatbuffers.Encoding):string|Uint8Array|null
+team(optionalEncoding?:any):string|Uint8Array|null {
   const offset = this.bb!.__offset(this.bb_pos, 8);
-  return offset ? this.bb!.readInt8(this.bb_pos + offset) : -1;
+  return offset ? this.bb!.__string(this.bb_pos + offset, optionalEncoding) : null;
 }
 
 rotation():number {
@@ -64,8 +66,8 @@ static addName(builder:flatbuffers.Builder, nameOffset:flatbuffers.Offset) {
   builder.addFieldOffset(1, nameOffset, 0);
 }
 
-static addTeam(builder:flatbuffers.Builder, team:number) {
-  builder.addFieldInt8(2, team, -1);
+static addTeam(builder:flatbuffers.Builder, teamOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(2, teamOffset, 0);
 }
 
 static addRotation(builder:flatbuffers.Builder, rotation:number) {

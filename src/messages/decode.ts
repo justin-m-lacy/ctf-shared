@@ -1,23 +1,23 @@
 import * as flatbuffers from 'flatbuffers';
-import { PlayerCancelFire } from '../flatbuffers/ctf/player-cancel-fire';
-import { PlayerChargeFire } from '../flatbuffers/ctf/player-charge-fire';
-import { PlayerMove } from '../flatbuffers/ctf/player-move';
-import { PlayerFire } from '../flatbuffers/ctf/player-fire';
-import { PlayerKilled } from '../flatbuffers/ctf/player-killed';
-import { PlayerRespawn } from '../flatbuffers/ctf/player-respawn';
-import { FlagTaken } from '../flatbuffers/ctf/flag-taken';
-import { FlagDropped } from '../flatbuffers/ctf/flag-dropped';
-import { FlagReturned } from '../flatbuffers/ctf/flag-returned';
-import { TeamScored } from '../flatbuffers/ctf/team-scored';
-import { MatchEnd } from '../flatbuffers/ctf/match-end';
-import { ClientMove } from '../flatbuffers/ctf/client/client-move';
-import { ClientFire } from '../flatbuffers/ctf/client/client-fire';
-import { ClientChargeFire } from '../flatbuffers/ctf/client/client-charge-fire';
-import { ClientCancelFire } from '../flatbuffers/ctf/client/client-cancel-fire';
-import { PlayerJoin } from '../flatbuffers/ctf/player-join';
-import { PlayerLeave } from '../flatbuffers/ctf/player-leave';
-import { MatchStart } from '../flatbuffers/ctf/match-start';
-import { MatchState } from '../flatbuffers/ctf/match-state';
+import { PlayerCancelFire } from 'buffers-out/ctf/player-cancel-fire';
+import { PlayerChargeFire } from 'buffers-out/ctf/player-charge-fire';
+import { PlayerMove } from 'buffers-out/ctf/player-move';
+import { PlayerFire } from 'buffers-out/ctf/player-fire';
+import { PlayerKilled } from 'buffers-out/ctf/player-killed';
+import { PlayerRespawn } from 'buffers-out/ctf/player-respawn';
+import { FlagTaken } from 'buffers-out/ctf/flag-taken';
+import { FlagDropped } from 'buffers-out/ctf/flag-dropped';
+import { FlagReturned } from 'buffers-out/ctf/flag-returned';
+import { TeamScored } from 'buffers-out/ctf/team-scored';
+import { MatchEnd } from 'buffers-out/ctf/match-end';
+import { ClientMove } from 'buffers-out/ctf/client/client-move';
+import { ClientFire } from 'buffers-out/ctf/client/client-fire';
+import { ClientChargeFire } from 'buffers-out/ctf/client/client-charge-fire';
+import { ClientCancelFire } from 'buffers-out/ctf/client/client-cancel-fire';
+import { PlayerJoin } from 'buffers-out/ctf/player-join';
+import { PlayerLeave } from 'buffers-out/ctf/player-leave';
+import { MatchStart } from 'buffers-out/ctf/match-start';
+import { MatchState } from 'buffers-out/ctf/match-state';
 
 export const Decoder = {
 
